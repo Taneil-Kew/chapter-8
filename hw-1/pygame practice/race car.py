@@ -3,6 +3,10 @@ import time
 import random
  
 pygame.init()
+
+#############
+crash_sound = pygame.mixer.Sound("crash.wav")
+#############
  
 display_width = 800
 display_height = 600
@@ -47,23 +51,12 @@ def text_objects(text, font):
     textSurface = font.render(text, True, black)
     return textSurface, textSurface.get_rect()
  
-##def message_display(text):
-##    largeText = pygame.font.SysFont("comicsansms",115)
-##    TextSurf, TextRect = text_objects(text, largeText)
-##    TextRect.center = ((display_width/2),(display_height/2))
-##    gameDisplay.blit(TextSurf, TextRect)
-## 
-##    pygame.display.update()
-## 
-##    time.sleep(2)
-## 
-##    game_loop()
-    
-    
  
 def crash():
-    
-    
+    ####################################
+    pygame.mixer.Sound.play(crash_sound)
+    pygame.mixer.music.stop()
+    ####################################
     largeText = pygame.font.SysFont("comicsansms",115)
     TextSurf, TextRect = text_objects("You Crashed", largeText)
     TextRect.center = ((display_width/2),(display_height/2))
@@ -72,12 +65,10 @@ def crash():
 
     while True:
         for event in pygame.event.get():
-            #print(event)
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
                 
-        #gameDisplay.fill(white)
         
 
         button("Play Again",150,450,100,50,green,bright_green,game_loop)
@@ -89,7 +80,7 @@ def crash():
 def button(msg,x,y,w,h,ic,ac,action=None):
     mouse = pygame.mouse.get_pos()
     click = pygame.mouse.get_pressed()
-    #print(click)
+
     if x+w > mouse[0] > x and y+h > mouse[1] > y:
         pygame.draw.rect(gameDisplay, ac,(x,y,w,h))
         if click[0] == 1 and action != None:
@@ -108,11 +99,14 @@ def quitgame():
 
 def unpause():
     global pause
+    pygame.mixer.music.unpause()
     pause = False
     
 
 def paused():
-
+    ############
+    pygame.mixer.music.pause()
+    #############
     largeText = pygame.font.SysFont("comicsansms",115)
     TextSurf, TextRect = text_objects("Paused", largeText)
     TextRect.center = ((display_width/2),(display_height/2))
@@ -121,13 +115,10 @@ def paused():
 
     while pause:
         for event in pygame.event.get():
-            #print(event)
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
-                
-        #gameDisplay.fill(white)
-        
+
 
         button("Continue",150,450,100,50,green,bright_green,unpause)
         button("Quit",550,450,100,50,red,bright_red,quitgame)
@@ -166,7 +157,10 @@ def game_intro():
     
 def game_loop():
     global pause
-
+    ############
+    pygame.mixer.music.load('jazz.wav')
+    pygame.mixer.music.play(-1)
+    ############
     x = (display_width * 0.45)
     y = (display_height * 0.8)
  
@@ -208,7 +202,6 @@ def game_loop():
         x += x_change
         gameDisplay.fill(white)
  
-        # things(thingx, thingy, thingw, thingh, color)
         things(thing_startx, thing_starty, thing_width, thing_height, block_color)
  
  
