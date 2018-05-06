@@ -9,4 +9,4 @@ def mirror(word):
     return word + reverse(word)
 
 
-mirror("woo")
+print(mirror("woo"))
